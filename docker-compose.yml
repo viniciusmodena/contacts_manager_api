@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: s1_db
+    build: .
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env
+    environment:
+      - IS_COMPOSE=dockerdev
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    container_name: db
+    image: postgres:14.4-alpine
+    ports: 
+      - 5435:5432
+    env_file:
+      - ./.env
+    environment:
+      - ./.env
+
+    volumes:
+      - postgre_s1_db:/var/lib/postgresql/data
+
+volumes:
+  postgre_s1_db:
+    driver: local

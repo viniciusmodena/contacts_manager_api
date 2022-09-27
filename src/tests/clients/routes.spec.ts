@@ -111,7 +111,7 @@ describe("Test routes for client", () => {
     const response = await request(app).post("/login").send(credentials);
 
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty("token");
+    expect(response.body).toHaveProperty("access_token");
   });
 
   test("Should not be able to login", async () => {
@@ -132,11 +132,11 @@ describe("Test routes for client", () => {
 
   test("Should be able to list all clients", async () => {
     const login_response = await request(app).post("/login").send(credentials);
-    const token = login_response.body.token;
+    const access_token = login_response.body.access_token;
 
     const response = await request(app)
       .get("/clients")
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(200);
 
@@ -156,11 +156,11 @@ describe("Test routes for client", () => {
 
   test("Should be able to check a specific client", async () => {
     const login_response = await request(app).post("/login").send(credentials);
-    const token = login_response.body.token;
+    const access_token = login_response.body.access_token;
 
     const response = await request(app)
       .get(`/clients/${client_1_id}`)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(200);
 
@@ -182,14 +182,14 @@ describe("Test routes for client", () => {
 
   test("Should be able to update own client", async () => {
     const login_response = await request(app).post("/login").send(credentials);
-    const token = login_response.body.token;
+    const access_token = login_response.body.access_token;
 
     const updateClient = { full_name: "Updated Client" };
 
     const response = await request(app)
       .patch(`/clients/${client_1_id}`)
       .send(updateClient)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(200);
 
@@ -217,14 +217,14 @@ describe("Test routes for client", () => {
 
   test("Should not be able to update other client", async () => {
     const login_response = await request(app).post("/login").send(credentials);
-    const token = login_response.body.token;
+    const access_token = login_response.body.access_token;
 
     const updateClient = { full_name: "Updated Full Name" };
 
     const response = await request(app)
       .patch(`/clients/${client_2_id}`)
       .send(updateClient)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual(
@@ -236,11 +236,11 @@ describe("Test routes for client", () => {
 
   test("Should not be able to delete other client", async () => {
     const login_response = await request(app).post("/login").send(credentials);
-    const token = login_response.body.token;
+    const access_token = login_response.body.access_token;
 
     const response = await request(app)
       .delete(`/clients/${client_2_id}`)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual(
@@ -263,11 +263,11 @@ describe("Test routes for client", () => {
 
   test("Should be able to delete own client", async () => {
     const login_response = await request(app).post("/login").send(credentials);
-    const token = login_response.body.token;
+    const access_token = login_response.body.access_token;
 
     const response = await request(app)
       .delete(`/clients/${client_1_id}`)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(204);
   });

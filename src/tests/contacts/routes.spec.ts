@@ -29,8 +29,8 @@ const contact_1: IContactRequest = {
 let client_1_id: string;
 let client_2_id: string;
 let contact_id: string;
-let token: string;
-let token_2: string;
+let access_token: string;
+let access_token_2: string;
 
 describe("Test routes for contact", () => {
   let connection: DataSource;
@@ -58,7 +58,7 @@ describe("Test routes for contact", () => {
     };
 
     const login_response = await request(app).post("/login").send(credentials);
-    token = login_response.body.token;
+    access_token = login_response.body.access_token;
 
     const credentials_2 = {
       email: client_2.email,
@@ -68,7 +68,7 @@ describe("Test routes for contact", () => {
     const login_2_response = await request(app)
       .post("/login")
       .send(credentials_2);
-    token_2 = login_2_response.body.token;
+    access_token_2 = login_2_response.body.access_token;
   });
 
   afterAll(async () => {
@@ -85,7 +85,7 @@ describe("Test routes for contact", () => {
     const response = await request(app)
       .post(`/client/${client_1_id}/contacts`)
       .send(contact_1)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
     contact_id = response.body.id;
 
     expect(response.status).toBe(201);
@@ -112,7 +112,7 @@ describe("Test routes for contact", () => {
     const response = await request(app)
       .post(`/client/${client_2_id}/contacts`)
       .send(contact_1)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual(
@@ -125,7 +125,7 @@ describe("Test routes for contact", () => {
   test("Should be able to list all contact from client 1", async () => {
     const response = await request(app)
       .get(`/client/${client_1_id}/contacts`)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("contacts");
@@ -146,7 +146,7 @@ describe("Test routes for contact", () => {
   test("Should not be able to list contacts from other client", async () => {
     const response = await request(app)
       .get(`/client/${client_2_id}/contacts`)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual(
@@ -164,7 +164,7 @@ describe("Test routes for contact", () => {
     const response = await request(app)
       .patch(`/client/contacts/${contact_id}`)
       .send(update_contact)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("full_name", update_contact.full_name);
@@ -200,7 +200,7 @@ describe("Test routes for contact", () => {
     const create_contact_response = await request(app)
       .post(`/client/${client_2_id}/contacts`)
       .send(new_contact)
-      .set("Authorization", `bearer: ${token_2}`);
+      .set("Authorization", `bearer: ${access_token_2}`);
     const new_contact_id = create_contact_response.body.id;
 
     const update_contact = {
@@ -210,7 +210,7 @@ describe("Test routes for contact", () => {
     const response = await request(app)
       .patch(`/client/contacts/${new_contact_id}`)
       .send(update_contact)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual(
@@ -243,11 +243,11 @@ describe("Test routes for contact", () => {
     const create_contact_response = await request(app)
       .post(`/client/${client_2_id}/contacts`)
       .send(new_contact)
-      .set("Authorization", `bearer: ${token_2}`);
+      .set("Authorization", `bearer: ${access_token_2}`);
     const new_contact_id = create_contact_response.body.id;
     const response = await request(app)
       .delete(`/client/contacts/${new_contact_id}`)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual(
@@ -260,7 +260,7 @@ describe("Test routes for contact", () => {
   test("Should be able to delete own contact", async () => {
     const response = await request(app)
       .delete(`/client/contacts/${contact_id}`)
-      .set("Authorization", `bearer: ${token}`);
+      .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(204);
   });

@@ -5,7 +5,7 @@ import { AppError } from "../../errors/appError";
 
 const listClientContactsService = async (
   client_id: string
-): Promise<Client> => {
+): Promise<Contact[]> => {
   const clientRepository = AppDataSource.getRepository(Client);
   const contactRepository = AppDataSource.getRepository(Contact);
 
@@ -27,10 +27,10 @@ const listClientContactsService = async (
   });
 
   if (!clientContacts) {
-    throw new AppError("Client not found", 404)
+    throw new AppError("Client not found", 404);
   }
 
-  return clientContacts
+  return clientContacts.contacts;
 
   // return contacts;
 };

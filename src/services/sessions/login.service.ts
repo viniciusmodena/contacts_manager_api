@@ -25,15 +25,15 @@ const loginService = async ({ email, password }: IClientLogin) => {
     }
   }
 
-  const token = jwt.sign(
-    { id: client.id },
-    process.env.JWT_SECRET as string,
-    {
-      expiresIn: "1h",
-    }
-  );
+  const token = jwt.sign({ id: client.id }, process.env.JWT_SECRET as string, {
+    expiresIn: "1h",
+  });
 
-  return token;
+  return {
+    access_token: token,
+    token_type: "Bearer",
+    user: client,
+  };
 };
 
 export default loginService;

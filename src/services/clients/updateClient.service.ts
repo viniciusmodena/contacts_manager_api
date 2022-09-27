@@ -17,12 +17,14 @@ const updateClientService = async (
   }
 
   if (data.email) {
-    const clients = await clientRepository.find();
+    if (data.email !== client.email) {
+      const clients = await clientRepository.find();
 
-    const emailAlreadyExist = clients.find((el) => el.email === data.email);
+      const emailAlreadyExist = clients.find((el) => el.email === data.email);
 
-    if (emailAlreadyExist) {
-      throw new AppError("Email already exists");
+      if (emailAlreadyExist) {
+        throw new AppError("Email already exists");
+      }
     }
   }
 

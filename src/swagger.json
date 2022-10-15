@@ -1,0 +1,570 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Contacts Manager API",
+    "description": "This API is use for manage a contact list for the user ",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/clients": {
+      "post": {
+        "summary": "Register user",
+        "description": "Create new user",
+        "tags": ["Clients"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientRegister"
+              },
+              "examples": {
+                "client": {
+                  "value": {
+                    "full_name": "Hermione Granger",
+                    "email": "hermione.granger@email.com",
+                    "password": "wingardiumLeviosa934",
+                    "phone_number": "934934934"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "201": {
+            "description": "Client created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List all users",
+        "description": "Retrieve all users. Route for admin only",
+        "tags": ["Clients"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/<:client_id>": {
+      "get": {
+        "summary": "Retrieve an user by id",
+        "description": "Retrieve a user by its id",
+        "tags": ["Clients"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "description": "Id from the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update user data",
+        "description": "Update an user information",
+        "tags": ["Clients"],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "description": "Id from the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientRegister"
+              },
+              "examples": {
+                "client": {
+                  "value": {
+                    "full_name": "Hermione Weasley"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "200": {
+            "description": "User updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an user by id",
+        "description": "Delete a user by its id",
+        "tags": ["Clients"],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "description": "Id from the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "204": {
+            "description": "Client deleted"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "description": "Login",
+        "tags": ["Session"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credential"
+              },
+              "examples": {
+                "client": {
+                  "value": {
+                    "email": "hermione.granger@email.com",
+                    "password": "wingardiumLeviosa934"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client/<:client_id>/contacts": {
+      "post": {
+        "summary": "Register new contact for the user",
+        "description": "Create new contact for the user",
+        "tags": ["Contact"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "description": "Id from the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              },
+              "examples": {
+                "contact": {
+                  "value": {
+                    "full_name": "Gina Weasley",
+                    "email": "gina@email.com",
+                    "password": "Reducto0",
+                    "phone_number": "999000934"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List all contacts from a user",
+        "description": "List all contacts from a user by the user's id",
+        "tags": ["Contact"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "description": "Id from the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contact"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client/contacts/<:contact_id>": {
+      "get": {
+        "summary": "Retrieve a contact",
+        "description": "Retrieve a contact by its id",
+        "tags": ["Contact"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "description": "Id from the contact",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a contact",
+        "description": "Update a contact by its id",
+        "tags": ["Contact"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "description": "Id from the contact",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              },
+              "examples": {
+                "client": {
+                  "value": {
+                    "full_name": "Gina Potter"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "200": {
+            "description": "Contact updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a contact",
+        "description": "Delete a contact by its id",
+        "tags": ["Contact"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "description": "Id from the contact",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "204": {
+            "description": "Contact deleted"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClientRegister": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "full_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          }
+        }
+      },
+      "Client": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "full_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            }
+          },
+          "created_at": {
+            "type": "string"
+          }
+        }
+      },
+      "Credential": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/Client"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "full_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

@@ -49,5 +49,5 @@ export const deleteClientController = async (req: Request, res: Response) => {
 
   await deleteClientService(client_id);
 
-  return res.status(204).json({ "message": "Client deleted"});
+  return res.status(204).json({ message: "Client deleted" });
 };

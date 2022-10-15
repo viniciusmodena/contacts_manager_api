@@ -4,11 +4,13 @@ import express from "express";
 import handleAppErrorMiddleware from "./middlewares/handleAppError.middleware";
 import appRoutes from "./routers";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import * as swaggerDocument from "./swagger.json";
 
 const app = express();
-// const cors = require("cors");
 
 app.use(express.json());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(cors());
 
 appRoutes(app);

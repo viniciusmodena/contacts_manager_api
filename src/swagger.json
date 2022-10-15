@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://git.heroku.com/contacts-manager-api-s1.git"
+      "url": "https://contacts-manager-api-s1.herokuapp.com"
     }
   ],
   "paths": {

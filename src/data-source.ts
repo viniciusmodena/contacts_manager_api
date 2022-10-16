@@ -21,7 +21,7 @@ export const AppDataSource =
         // password: process.env.POSTGRES_PASSWORD,
         // database: process.env.POSTGRES_DB,
         // synchronize: false,
-        // logging: false,
+        // logging: true,
         // entities: ["./src/entities/*.ts"],
         // migrations: ["./src/migrations/*.ts"],
         url: process.env.DATABASE_URL,
@@ -30,11 +30,13 @@ export const AppDataSource =
             ? { rejectUnauthorized: false }
             : false,
         synchronize: false,
-        logging: false,
-        entities: process.env.NODE_ENV === "production"
-        ? ["./dist/.src/entities/*.js"]
-        : ["./src/entities/*.ts"],
-        migrations: process.env.NODE_ENV === "production"
-        ? ["./dist//src/migrations/*.js"]
-        : ["./src/migrations/*.ts"],
+        logging: true,
+        entities:
+          process.env.NODE_ENV === "production"
+            ? ["./dist/src/entities/*.js"]
+            : ["./src/entities/*.ts"],
+        migrations:
+          process.env.NODE_ENV === "production"
+            ? ["./dist/src/migrations/*.js"]
+            : ["./src/migrations/*.ts"],
       });

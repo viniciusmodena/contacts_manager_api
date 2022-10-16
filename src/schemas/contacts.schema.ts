@@ -8,7 +8,7 @@ const phoneRegExp =
 export const createContactSchema: SchemaOf<IContactRequest> = yup
   .object()
   .shape({
-    full_name: yup.string().required().max(127),
+    name: yup.string().required().max(127),
     email: yup.string().email().max(127),
     phone_number: yup
       .string()
@@ -18,7 +18,7 @@ export const createContactSchema: SchemaOf<IContactRequest> = yup
 export const updateContactSchema: SchemaOf<IUpdateContact> = yup
   .object()
   .shape({
-    full_name: yup.string().max(127),
+    name: yup.string().max(127),
     email: yup.string().email().max(127),
     phone_number: yup
       .string()

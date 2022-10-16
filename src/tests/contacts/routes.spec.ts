@@ -7,21 +7,23 @@ import { Contact } from "../../entities/contact.entity";
 import { IContactRequest } from "../../interfaces/contact";
 
 const client_1: IClientRequest = {
-  full_name: "Client One",
+  first_name: "Client",
+  last_name: "One",
   email: "client1@email.com",
   password: "1234",
   phone_number: "111111111",
 };
 
 const client_2: IClientRequest = {
-  full_name: "Client Two",
+  first_name: "Client",
+  last_name: "Two",
   email: "client2@email.com",
   password: "1234",
   phone_number: "222222222",
 };
 
 const contact_1: IContactRequest = {
-  full_name: "Contact One Name",
+  name: "Contact One Name",
   email: "contact1@email.com",
   phone_number: "123123123",
 };
@@ -90,7 +92,7 @@ describe("Test routes for contact", () => {
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("full_name");
+    expect(response.body).toHaveProperty("name");
     expect(response.body).toHaveProperty("email");
     expect(response.body).toHaveProperty("phone_number");
   });
@@ -158,7 +160,7 @@ describe("Test routes for contact", () => {
 
   test("Should be able to update own contact", async () => {
     const update_contact = {
-      full_name: "Updated name",
+      name: "Updated name",
       email: "updatedemail@email.com",
     };
     const response = await request(app)
@@ -167,7 +169,7 @@ describe("Test routes for contact", () => {
       .set("Authorization", `bearer: ${access_token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("full_name", update_contact.full_name);
+    expect(response.body).toHaveProperty("name", update_contact.name);
     expect(response.body).toHaveProperty("email", update_contact.email);
     expect(response.body).toHaveProperty("phone_number");
     expect(response.body).toHaveProperty("id");
@@ -175,7 +177,7 @@ describe("Test routes for contact", () => {
 
   test("Should not be able to update contact without authentication", async () => {
     const update_contact = {
-      full_name: "Updated name",
+      name: "Updated name",
       email: "updatedemail@email.com",
     };
     const response = await request(app)
@@ -192,7 +194,7 @@ describe("Test routes for contact", () => {
 
   test("Should not be able to update contact from other client", async () => {
     const new_contact = {
-      full_name: "new contact",
+      name: "new contact",
       email: "newcontact@email.com",
       phone_number: "000555123",
     };
@@ -204,7 +206,7 @@ describe("Test routes for contact", () => {
     const new_contact_id = create_contact_response.body.id;
 
     const update_contact = {
-      full_name: "Updated name",
+      name: "Updated name",
       email: "updatedemail@email.com",
     };
     const response = await request(app)
@@ -235,7 +237,7 @@ describe("Test routes for contact", () => {
 
   test("Should not be able to delete contact from other client", async () => {
     const new_contact = {
-      full_name: "new contact_2",
+      name: "new contact_2",
       email: "newcontact2@email.com",
       phone_number: "000555123",
     };

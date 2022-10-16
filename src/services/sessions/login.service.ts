@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { compare } from "bcryptjs";
-import "dotenv/config";
 import { IClientLogin } from "../../interfaces/client";
 import { AppDataSource } from "../../data-source";
 import { Client } from "../../entities/client.entity";
@@ -26,7 +25,7 @@ const loginService = async ({ email, password }: IClientLogin) => {
   }
 
   const token = jwt.sign({ id: client.id }, process.env.JWT_SECRET as string, {
-    expiresIn: "1h",
+    expiresIn: "24h",
   });
 
   return {

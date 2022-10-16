@@ -7,14 +7,16 @@ import app from "../../app";
 import loginService from "../../services/sessions/login.service";
 
 const client_1: IClientRequest = {
-  full_name: "Client One",
+  first_name: "Client",
+  last_name: "One",
   email: "client1@email.com",
   password: "1234",
   phone_number: "111111111",
 };
 
 const client_2: IClientRequest = {
-  full_name: "Client Two",
+  first_name: "Client",
+  last_name: "Two",
   email: "client2@email.com",
   password: "1234",
   phone_number: "222222222",
@@ -52,7 +54,8 @@ describe("Test routes for client", () => {
     expect(response.status).toBe(201);
 
     expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("full_name", client_1.full_name);
+    expect(response.body).toHaveProperty("first_name", client_1.first_name);
+    expect(response.body).toHaveProperty("last_name", client_1.last_name);
     expect(response.body).toHaveProperty("email", client_1.email);
     expect(response.body).toHaveProperty("phone_number", client_1.phone_number);
     expect(response.body).toHaveProperty("created_at");
@@ -65,7 +68,8 @@ describe("Test routes for client", () => {
     expect(response.status).toBe(201);
 
     expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("full_name", client_2.full_name);
+    expect(response.body).toHaveProperty("first_name", client_2.first_name);
+    expect(response.body).toHaveProperty("last_name", client_2.last_name);
     expect(response.body).toHaveProperty("email", client_2.email);
     expect(response.body).toHaveProperty("phone_number", client_2.phone_number);
     expect(response.body).toHaveProperty("created_at");
@@ -73,7 +77,8 @@ describe("Test routes for client", () => {
 
   test("Should not be able to create a client with a email already registered", async () => {
     const client: IClientRequest = {
-      full_name: "Client One",
+      first_name: "Client",
+      last_name: "One",
       email: "client1@email.com",
       password: "1234",
       phone_number: "654654654",
@@ -91,7 +96,8 @@ describe("Test routes for client", () => {
 
   test("Should not be able to create a client with a phone number already registered", async () => {
     const client: IClientRequest = {
-      full_name: "Client",
+      first_name: "Client",
+      last_name: "Randon",
       email: "client_random@email.com",
       password: "1234",
       phone_number: "111111111",
@@ -164,7 +170,8 @@ describe("Test routes for client", () => {
 
     expect(response.status).toBe(200);
 
-    expect(response.body).toHaveProperty("full_name", client_1.full_name);
+    expect(response.body).toHaveProperty("first_name", client_1.first_name);
+    expect(response.body).toHaveProperty("last_name", client_1.last_name);
     expect(response.body).toHaveProperty("email", client_1.email);
     expect(response.body).toHaveProperty("phone_number", client_1.phone_number);
   });
@@ -184,7 +191,7 @@ describe("Test routes for client", () => {
     const login_response = await request(app).post("/login").send(credentials);
     const access_token = login_response.body.access_token;
 
-    const updateClient = { full_name: "Updated Client" };
+    const updateClient = { first_name: "Updated Client" };
 
     const response = await request(app)
       .patch(`/clients/${client_1_id}`)
@@ -193,7 +200,8 @@ describe("Test routes for client", () => {
 
     expect(response.status).toBe(200);
 
-    expect(response.body.full_name).toBe(updateClient.full_name);
+    expect(response.body.first_name).toBe(updateClient.first_name);
+    expect(response.body).toHaveProperty("last_name");
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("email");
     expect(response.body).toHaveProperty("phone_number");
@@ -201,7 +209,7 @@ describe("Test routes for client", () => {
   });
 
   test("Should not be able to update own client without authentication", async () => {
-    const updateClient = { full_name: "Updated Client" };
+    const updateClient = { first_name: "Updated Client" };
 
     const response = await request(app)
       .patch(`/clients/${client_1_id}`)
@@ -219,7 +227,7 @@ describe("Test routes for client", () => {
     const login_response = await request(app).post("/login").send(credentials);
     const access_token = login_response.body.access_token;
 
-    const updateClient = { full_name: "Updated Full Name" };
+    const updateClient = { first_name: "Updated Full Name" };
 
     const response = await request(app)
       .patch(`/clients/${client_2_id}`)

@@ -13,7 +13,7 @@ export class Contact {
   id: string;
 
   @Column({ length: 127 })
-  full_name: string;
+  name: string;
 
   @Column({ length: 127, nullable: true })
   email: string;

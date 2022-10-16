@@ -13,7 +13,10 @@ export class Client {
   id: string;
 
   @Column({ length: 127 })
-  full_name: string;
+  first_name: string;
+
+  @Column({ length: 127 })
+  last_name: string;
 
   @Column({ length: 127, unique: true })
   email: string;

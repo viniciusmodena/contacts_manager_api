@@ -30,7 +30,7 @@ export const AppDataSource =
             ? { rejectUnauthorized: false }
             : false,
         synchronize: false,
-        logging: true,
+        logging: false,
         entities:
           process.env.NODE_ENV === "production"
             ? ["./dist/src/entities/*.js"]

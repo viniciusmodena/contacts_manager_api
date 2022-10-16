@@ -6,10 +6,11 @@ import listClientsService from "../services/clients/listClients.service";
 import updateClientService from "../services/clients/updateClient.service";
 
 export const createClientController = async (req: Request, res: Response) => {
-  const { full_name, email, password, phone_number } = req.reqData;
+  const { first_name, last_name, email, password, phone_number } = req.reqData;
 
   const client = await createClientService({
-    full_name,
+    first_name,
+    last_name,
     email,
     password,
     phone_number,

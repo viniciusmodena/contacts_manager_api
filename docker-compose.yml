@@ -12,6 +12,7 @@ services:
       - IS_COMPOSE=dockerdev
     depends_on:
       - db
+      - migration
     volumes:
       - .:/app
 
@@ -22,11 +23,17 @@ services:
       - 5435:5432
     env_file:
       - ./.env
-    environment:
-      - ./.env
-#     volumes:
-#       - postgre_s1_db:/var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
-# volumes:
-#   postgre_s1_db:
-#     driver: local
+  migration:
+    build: .
+    env_file: .env
+    volumes:
+      - .:/code
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; yarn typeorm migration:run -d src/data-source.ts'
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

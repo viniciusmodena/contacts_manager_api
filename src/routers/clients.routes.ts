@@ -9,12 +9,19 @@ import {
 import isOwnerMiddleware from "../middlewares/isOwner.middleware";
 import tokenValidation from "../middlewares/tokenValidation.middleware";
 import { validateSchema } from "../middlewares/validateSchema.middleware";
-import { createClientSchema, updateClientSchema } from "../schemas/clients.schema";
+import {
+  createClientSchema,
+  updateClientSchema,
+} from "../schemas/clients.schema";
 
 const clientRouter = Router();
 
-clientRouter.post("",validateSchema(createClientSchema), createClientController);
-clientRouter.get("", tokenValidation, listClientsController);
+clientRouter.post(
+  "",
+  validateSchema(createClientSchema),
+  createClientController
+);
+clientRouter.get("", listClientsController);
 clientRouter.get(
   "/:client_id",
   tokenValidation,

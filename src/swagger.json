@@ -25,7 +25,8 @@
               "examples": {
                 "client": {
                   "value": {
-                    "full_name": "Hermione Granger",
+                    "first_name": "Hermione",
+                    "last_name": "Granger",
                     "email": "hermione.granger@email.com",
                     "password": "wingardiumLeviosa934",
                     "phone_number": "934934934"
@@ -138,7 +139,7 @@
               "examples": {
                 "client": {
                   "value": {
-                    "full_name": "Hermione Weasley"
+                    "last_name": "Weasley"
                   }
                 }
               }
@@ -261,7 +262,8 @@
               "examples": {
                 "contact": {
                   "value": {
-                    "full_name": "Gina Weasley",
+                    "first_name": "Gina",
+                    "last_name": "Weasley",
                     "email": "gina@email.com",
                     "password": "Reducto0",
                     "phone_number": "999000934"
@@ -402,7 +404,7 @@
               "examples": {
                 "client": {
                   "value": {
-                    "full_name": "Gina Potter"
+                    "last_name": "Potter"
                   }
                 }
               }
@@ -476,7 +478,10 @@
           "id": {
             "type": "string"
           },
-          "full_name": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
             "type": "string"
           },
           "email": {
@@ -496,7 +501,10 @@
           "id": {
             "type": "string"
           },
-          "full_name": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
             "type": "string"
           },
           "email": {
@@ -547,7 +555,10 @@
           "id": {
             "type": "string"
           },
-          "full_name": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
             "type": "string"
           },
           "email": {

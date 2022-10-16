@@ -5,7 +5,8 @@ import { IClientRequest } from "../../interfaces/client";
 import { hash } from "bcryptjs";
 
 const createClientService = async ({
-  full_name,
+  first_name,
+  last_name,
   email,
   phone_number,
   password,
@@ -31,7 +32,8 @@ const createClientService = async ({
   const hashedPassword = await hash(password, 10);
 
   const client = clientRepository.create({
-    full_name,
+    first_name,
+    last_name,
     email,
     password: hashedPassword,
     phone_number,
